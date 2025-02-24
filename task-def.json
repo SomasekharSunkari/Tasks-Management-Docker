@@ -1,0 +1,54 @@
+{
+    "family": "task-manager",
+    "containerDefinitions": [
+        {
+            "name": "backend",
+            "image": "sunkarisomasekhar/task-backend:latest",
+            "cpu": 512,
+            "memory": 1024,
+            "portMappings": [
+                {
+                    "containerPort": 5000,
+                    "hostPort": 5000
+                }
+            ],
+            "essential": true,
+            "healthCheck": {
+                "command": [
+                    "CMD-SHELL",
+                    "curl -f http://localhost:5000/ || exit 1"
+                ],
+                "interval": 30,
+                "timeout": 5,
+                "retries": 3,
+                "startPeriod": 10
+            }
+        },
+        {
+            "name": "frontend",
+            "image": "sunkarisomasekhar/task-frontend:latest",
+            "cpu": 512,
+            "memory": 1024,
+            "portMappings": [
+                {
+                    "containerPort": 3000,
+                    "hostPort": 3000
+                }
+            ],
+            "essential": true,
+            "dependsOn": [
+                {
+                    "containerName": "backend",
+                    "condition": "HEALTHY"
+                }
+            ]
+        }
+    ],
+    "networkMode": "awsvpc",
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "2048",
+    "executionRoleArn": "arn:aws:iam::975050220365:role/ecsTaskExecutionRole"
+}

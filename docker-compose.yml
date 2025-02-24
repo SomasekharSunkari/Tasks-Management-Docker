@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  backend:
+    # build: ./backend
+    # container_name: backend-service
+    container_name: backend
+    image: sunkarisomasekhar/task-backend:latest
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=dev
+    networks:
+      - app-network
+
+  frontend:
+    # build: ./frontend
+    # container_name: frontend-service
+    container_name: frontend
+    image: sunkarisomasekhar/task-frontend:latest
+    # docker.io/sunkarisomasekhar/task-frontend:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
