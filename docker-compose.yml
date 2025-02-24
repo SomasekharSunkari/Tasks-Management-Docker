@@ -1,9 +1,6 @@
 version: "3.8"
-
 services:
   backend:
-    # build: ./backend
-    # container_name: backend-service
     container_name: backend
     image: sunkarisomasekhar/task-backend:latest
     ports:
@@ -14,15 +11,15 @@ services:
       - app-network
 
   frontend:
-    # build: ./frontend
-    # container_name: frontend-service
     container_name: frontend
-    image: sunkarisomasekhar/task-frontend:latest
-    # docker.io/sunkarisomasekhar/task-frontend:latest
+    image: sunkarisomasekhar/task-frontend:latest  
+
     ports:
-      - "3000:3000"
+      - "80:80"
     depends_on:
       - backend
+    environment:
+      - REACT_APP_BACKEND_URL=http://backend:5000  
     networks:
       - app-network
 
